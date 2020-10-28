@@ -1,4 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import { FirebaseTextInput } from "./App.js";
-ReactDOM.render(<FirebaseTextInput placeholder="hi"/>, document.getElementById("root"));
+import App from "./App.js";
+
+
+
+// ReactDOM.render(<FirebaseTextInput instance={instance} placeholder="hi"/>, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById("root"));
