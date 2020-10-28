@@ -23,6 +23,7 @@ const App = () => {
   const [refKey, setRefKey] = useState('')
   const [err, setError] = useState('')
   const [success, setSuccess] = useState('')
+  const [radioInput, setRadioInput] = useState('')
   const updateConfigSecrets = async e => {
     setError('')
     setSuccess('')
@@ -104,13 +105,64 @@ const App = () => {
       </form>
       <hr />
       <h1>Components</h1>
-      <ul>
-        <li>
-          <h2>FirebaseTextInput</h2>
-          {/* <button onClick={submitConfig}>submit configuration</button> */}
-          <FirebaseTextInput dbRef={dbRef} refKey={refKey} placeholder="Create React Library Example 😄" />
-        </li>
-      </ul>
+      <div style={{ display: 'flex' }}>
+        <ul>
+          <h2>Text Inputs</h2>
+          <li>
+            <h2>FirebaseTextInput</h2>
+            {/* <button onClick={submitConfig}>submit configuration</button> */}
+            <FirebaseTextInput dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
+          </li>
+          <li>
+            <h2>FirebaseTextInput[type="email"]</h2>
+            <FirebaseTextInput type="email" dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
+          </li>
+          <li>
+            <h2>FirebaseTextInput[type="password"]</h2>
+            <FirebaseTextInput type="password" dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
+          </li>
+          <li>
+            <h2>FirebaseTextInput[type="tel"]</h2>
+            <FirebaseTextInput type="tel" dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
+          </li>
+        </ul>
+        <ul>
+          <h2>Other Inputs</h2>
+          <li>
+            <h2>FirebaseTextInput[type="checkbox"]</h2>
+            <div>
+              <input type="checkbox" />
+              <span>Sets the reference true or false</span>
+            </div>
+          </li>
+          <li>
+            <h2>FirebaseTextInput[type="checkbox"]</h2>
+            <small>Sets the reference to the value of the radio button</small>
+            <form>
+              <div>
+                <input type="radio" value="cats" onClick={() => setRadioInput('cats')} checked={radioInput === 'cats'} />
+                <span>Cats</span>
+              </div>
+              <div>
+                <input type="radio" value="dogs" onClick={() => setRadioInput('dogs')} checked={radioInput === 'dogs'} />
+                <span>Dogs</span>
+              </div>
+              <div>
+                <input type="radio" value="lizards" onClick={() => setRadioInput('lizards')} checked={radioInput === 'lizards'} />
+                <span>Lizards</span>
+              </div>
+            </form>
+          </li>
+          <li>
+            <h2>FirebaseTextArea</h2>
+            <div>
+              <textarea placeholder="Your Text Here">
+
+              </textarea>
+            </div>
+          </li>
+        </ul>
+      </div>
       <div style={{ height: "900px" }}>
 
       </div>

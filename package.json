@@ -6,6 +6,7 @@
     "license": "MIT",
     "repository": "reidjs/react-firebase-input",
     "main": "dist/index.js",
+    "homepage": "https://reidjs.github.io/react-firebase-input/",
     "module": "dist/index.modern.js",
     "source": "src/index.js",
     "engines": {
