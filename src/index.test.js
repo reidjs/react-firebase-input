@@ -1,7 +1,7 @@
-import { ExampleComponent } from '.'
+import { FirebaseTextInput } from '.'
 
-describe('ExampleComponent', () => {
+describe('FirebaseTextInput', () => {
   it('is truthy', () => {
-    expect(ExampleComponent).toBeTruthy()
+    expect(FirebaseTextInput).toBeTruthy()
   })
 })
