@@ -21,7 +21,11 @@ export const FirebaseTextInput  = (props) => {
     if (dbRef && refKey) {
       dbRef.on('value', (snapshot) => {
         if (snapshot.exists()) {
-          const val = snapshot.val()[refKey ]
+          // console.log('snapshot.val()', snapshot.val())
+          let val
+          if (snapshot.val() && snapshot.val()[refKey]) {
+            val = snapshot.val()[refKey]
+          }
           // console.log('val', val)
           setValue(val)
         }
