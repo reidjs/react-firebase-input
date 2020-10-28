@@ -98,7 +98,8 @@ const App = () => {
         <input onChange={handleKeyChange} value={refKey}></input>
         <br />
         <br />
-        <button onClick={updateDbRef}>Update DB Configuration</button>
+        <h3>Update Configuration</h3>
+        <button style={{background: 'green', color: 'white', padding: '10px'}} onClick={updateDbRef}>Submit</button>
 
         <p style={{ color: 'red' }}>{err}</p>
         <p style={{ color: 'green' }}>{success}</p>
@@ -109,56 +110,60 @@ const App = () => {
         <ul>
           <h2>Text Inputs</h2>
           <li>
-            <h2>FirebaseTextInput</h2>
+            <h3>FirebaseTextInput</h3>
             {/* <button onClick={submitConfig}>submit configuration</button> */}
             <FirebaseTextInput dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
           </li>
           <li>
-            <h2>FirebaseTextInput[type="email"]</h2>
+            <h3>FirebaseTextInput[type="email"]</h3>
             <FirebaseTextInput type="email" dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
           </li>
           <li>
-            <h2>FirebaseTextInput[type="password"]</h2>
+            <h3>FirebaseTextInput[type="password"]</h3>
             <FirebaseTextInput type="password" dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
           </li>
           <li>
-            <h2>FirebaseTextInput[type="tel"]</h2>
+            <h3>FirebaseTextInput[type="tel"]</h3>
             <FirebaseTextInput type="tel" dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
           </li>
         </ul>
         <ul>
           <h2>Other Inputs</h2>
           <li>
-            <h2>FirebaseTextInput[type="checkbox"]</h2>
+            <h3>FirebaseTextInput[type="checkbox"]</h3>
             <div>
-              <input type="checkbox" />
+              <FirebaseTextInput type="checkbox" dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
               <span>Sets the reference true or false</span>
             </div>
           </li>
           <li>
-            <h2>FirebaseTextInput[type="checkbox"]</h2>
+            <h3>FirebaseTextInput[type="radio"] (TODO)</h3>
             <small>Sets the reference to the value of the radio button</small>
             <form>
               <div>
-                <input type="radio" value="cats" onClick={() => setRadioInput('cats')} checked={radioInput === 'cats'} />
+                <FirebaseTextInput type="radio" dbRef={dbRef} refKey={refKey} value="cats" />
                 <span>Cats</span>
               </div>
               <div>
-                <input type="radio" value="dogs" onClick={() => setRadioInput('dogs')} checked={radioInput === 'dogs'} />
+                <FirebaseTextInput type="radio" dbRef={dbRef} refKey={refKey} value="dogs" />
                 <span>Dogs</span>
               </div>
               <div>
-                <input type="radio" value="lizards" onClick={() => setRadioInput('lizards')} checked={radioInput === 'lizards'} />
+                <FirebaseTextInput type="radio" dbRef={dbRef} refKey={refKey} value="lizards" />
                 <span>Lizards</span>
               </div>
             </form>
           </li>
           <li>
-            <h2>FirebaseTextArea</h2>
+            <h3>FirebaseTextInput[type="textarea"]</h3>
             <div>
-              <textarea placeholder="Your Text Here">
-
-              </textarea>
+              <FirebaseTextInput type="textarea" dbRef={dbRef} refKey={refKey} />
+            </div>
+          </li>
+          <li>
+            <h3>FirebaseTextInput[type="range"]</h3>
+            <div>
+              <FirebaseTextInput type="range" dbRef={dbRef} refKey={refKey} min="0" max="100" />
             </div>
           </li>
         </ul>
