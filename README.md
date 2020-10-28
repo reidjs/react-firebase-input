@@ -1,7 +1,9 @@
 # react-firebase-input
 
-> Sync react inputs with firebase realtime database
+> Sync react inputs with your firebase realtime database.
 
+See how it works:
+[Live Example](https://reidjs.github.io/react-firebase-input/)
 [![NPM](https://img.shields.io/npm/v/react-firebase-input.svg)](https://www.npmjs.com/package/react-firebase-input) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Install
@@ -13,16 +15,19 @@ npm install --save react-firebase-input
 ## Usage
 
 ```jsx
-import React, { Component } from 'react'
+import React from 'react'
+import { FirebaseTextInput }from 'react-firebase-input'
 
-import MyComponent from 'react-firebase-input'
-import 'react-firebase-input/dist/index.css'
+const Example = () => {
+  const dbRef = firebaseDb.ref('/school/grade5/')
 
-class Example extends Component {
-  render() {
-    return <MyComponent />
-  }
+  return (
+    <FirebaseTextInput
+    dbRef={dbRef} 
+    refKey="students"/>
+  )
 }
+
 ```
 
 ## License
