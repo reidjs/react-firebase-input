@@ -1,11 +1,12 @@
 {
   "name": "react-firebase-input",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "React inputs that sync to and from your firebase reference.",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --mode development",
-    "build": "./node_modules/.bin/babel src --out-file index.js",
+    "build": "webpack --mode production",
+    "DONOTUSE": "./node_modules/.bin/babel src --out-file dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
