@@ -19,49 +19,26 @@ const App = () => {
   const [dbRef, setDbRef] = useState(null)
   const [db, setDb] = useState(null)
   const [dbRefString, setDbRefString] = useState('/')
-  const [config, setConfig] = useState({})
+  const [config, setConfig] = useState(localStorage.getItem('config') || '')
   const [refKey, setRefKey] = useState('')
   const [err, setError] = useState('')
   const [success, setSuccess] = useState('')
-  const [radioInput, setRadioInput] = useState('')
+  // const [radioInput, setRadioInput] = useState('')
   const updateConfigSecrets = async e => {
     setError('')
     setSuccess('')
-
-    // console.log('e.target.value', e.target.value)
     setConfig(e.target.value)
-    // updateDbRef()
-    // const raw = e.target.value
-    // try {
-    //   const c = JSON.parse(raw)
-    //   instance = await firebase.initializeApp(c);
-    //   db = firebase.database()
-    //   const r = db.ref(dbRefString)
-    //   setDbRef(r)
-    //   setSuccess('Success.')
-    // } catch (err) {
-    //   // console.log('err', err.message)
-    //   setError(err.message)
-    // }
   }
   const handleDbRefChange = e => {
-    // setError('')
-    // setSuccess('')
     setDbRefString(e.target.value)
-    // let r
-    // try {
-    //   r = db.ref(e.target.value)
-    //   setDbRef(r)
-    // } catch (err) {
-    //   setError(err.message)
-    // }
   }
   const handleKeyChange = e => {
     setRefKey(e.target.value)
   }
 
   const updateDbRef = async (e) => {
-    e.preventDefault()
+    if (e) 
+      e.preventDefault()
     try {
       const c = JSON.parse(config)
       if (!db) {
@@ -78,23 +55,25 @@ const App = () => {
       setError(err.message)
     }
   }
-  // useEffect(() => {
-  //   if (instance) {
-  //     const db = firebase.database()
-  //     const r = db.ref('/')
-  //     setDbRef(r)
-  //   }
-  // }, [instance])
+  useEffect(() => {
+    if (config) {
+      localStorage.setItem('config', config)
+      updateDbRef()
+    }
+  }, [config])
+
   return (
     <div style={{ padding: "10px 30px" }}>
       <form>
         <h1>Firebase Config</h1>
         <h3>Paste your Firebase Realtime Database config JSON here</h3>
-        <textarea placeholder={exampleConfig} rows="15" cols="40" onChange={updateConfigSecrets}>
+        <small>This will be saved in localStorage</small>
+        <br />
+        <textarea placeholder={config || exampleConfig} rows="15" cols="40" onChange={updateConfigSecrets}>
         </textarea>
         <h3>Database Reference</h3>
         <input onChange={handleDbRefChange} value={dbRefString}></input>
-        <h3>Reference Key</h3>
+        <h3>Reference Key (must not be blank)</h3>
         <input onChange={handleKeyChange} value={refKey}></input>
         <br />
         <br />
@@ -137,7 +116,7 @@ const App = () => {
             </div>
           </li>
           <li>
-            <h3>FirebaseTextInput[type="radio"] (TODO)</h3>
+            <h3>FirebaseTextInput[type="radio"]</h3>
             <small>Sets the reference to the value of the radio button</small>
             <form>
               <div>

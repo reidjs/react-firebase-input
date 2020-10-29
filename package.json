@@ -51,5 +51,8 @@
     },
     "files": [
         "dist"
-    ]
+    ],
+    "dependencies": {
+        "firebase": "^8.0.0"
+    }
 }

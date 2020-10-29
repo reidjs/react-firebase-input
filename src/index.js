@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import styles from './styles.module.css'
 
 export const FirebaseTextInput = (props) => {
   const [value, setValue] = useState('')
@@ -13,10 +12,13 @@ export const FirebaseTextInput = (props) => {
     if (!refKey) {
       throw Error('no reference key')
     }
-    switch(props.type) {
+    switch (props.type) {
       case 'checkbox':
-      case 'radio':
         handleCheckboxChange(e.target.value)
+        return
+      case 'radio':
+        handleRadioChange(e.target.value)
+        return
       default:
         updateDatabase(e.target.value)
     }
@@ -26,59 +28,93 @@ export const FirebaseTextInput = (props) => {
     obj[refKey] = value
     dbRef.update(obj)
   }
+
   const handleCheckboxChange = value => {
     const obj = {}
 
     dbRef.once('value').then(snapshot => {
       if (snapshot.exists()) {
         const val = snapshot.val()
-        // console.log('val', val[refKey])
-        if (val[refKey]) {
+        if (val[refKey] === true) {
           obj[refKey] = false
+          setChecked(false)
         } else {
           obj[refKey] = true
+          setChecked(true)
         }
         dbRef.update(obj)
       }
     })
   }
-  // const instance = props.instance
+  const handleRadioChange = value => {
+    const obj = {}
+
+    dbRef.once('value').then(snapshot => {
+      if (snapshot.exists()) {
+        const val = snapshot.val()
+        if (val[refKey] === value) {
+          obj[refKey] = ''
+        } else {
+          obj[refKey] = value
+        }
+        dbRef.update(obj)
+      }
+    })
+  }
+
   const otherProps = Object.assign({}, props)
   delete otherProps.dbRef
   delete otherProps.refKey
-  // console.log('instance', instance)
+
   useEffect(() => {
-    if (dbRef && refKey) {
-      dbRef.on('value', (snapshot) => {
+    if (!dbRef || !refKey)
+      return
+
+    if (props.type === 'checkbox') {
+      dbRef.once('value').then((snapshot) => {
+        if (snapshot.exists()) {
+          let val
+          if (snapshot.val() && snapshot.val()[refKey]) {
+            val = snapshot.val()[refKey]
+          }
+          setChecked(val == true)
+        }
+      })
+    } else if (props.type === 'radio') {
+      dbRef.on('value', snapshot => {
+        if (snapshot.exists()) {
+          let val
+          if (snapshot.val() && snapshot.val()[refKey]) {
+            val = snapshot.val()[refKey]
+          }
+          setChecked(val === props.value)
+        }
+      })
+    } else {
+      dbRef.on('value', snapshot => {
         if (snapshot.exists()) {
           // console.log('snapshot.val()', snapshot.val())
           let val
           if (snapshot.val() && snapshot.val()[refKey]) {
             val = snapshot.val()[refKey]
           }
-          // console.log('val', val)
-          if (props.type === 'checkbox') {
-            setChecked(val == true)
-          } else if (props.type === 'radio') {
-            setChecked(val === props.value)
-          } else {
-            setValue(val)
-          }
+          setValue(val)
         }
       })
     }
   }, [dbRef, refKey])
+
   if (props.type === 'textarea') {
     return (
-      <textarea onChange={handleChange} placeholder="test" {...otherProps} disabled={props.disabled || (!dbRef || !refKey)} />
+      <textarea onChange={handleChange} {...otherProps} disabled={props.disabled || (!dbRef || !refKey)} />
     )
   } else if (props.type === 'checkbox') {
     return (
-    <input onChange={handleChange} {...otherProps} disabled={props.disabled || (!dbRef || !refKey)} checked={checked}></input>
+      <input onChange={handleChange} {...otherProps} disabled={props.disabled || (!dbRef || !refKey)} checked={checked}></input>
     )
   } else if (props.type === 'radio') {
     return (
-    <input onChange={handleChange} {...otherProps} disabled={props.disabled || (!dbRef || !refKey)} checked={checked}></input>
+      <input onChange={handleChange} {...otherProps} disabled={props.disabled || (!dbRef || !refKey)} checked={checked}></input>
     )
   } else {
     return (
