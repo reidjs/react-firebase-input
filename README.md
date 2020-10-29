@@ -1,20 +1,19 @@
 # react-firebase-input
 
-> Sync inputs and forms from React to your Firebase realtime database
+> Sync inputs and forms from React to your Firebase realtime database  
+[![NPM](https://img.shields.io/npm/v/react-firebase-input.svg)](https://www.npmjs.com/package/react-firebase-input) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)  
 
-![input animation](input1.gif)
+![input animation](input1.gif)  
 On component mount, the values from your Firebase realtime database will set on your FirebaseInput components in react. As the user changes the input values they will update the values in the database. 
 
 🎉Now Supports Forms🎉  
 
-![form animation](form1.gif)
+![form animation](form1.gif)  
 If you want multiple inputs to submit simultaneously, wrap your inputs with the FirebaseForm component. 
 
-See how it works:  
+See more examples and experiment with your own database:  
 [Live Example](https://reidjs.github.io/react-firebase-input/)
 
-
-[![NPM](https://img.shields.io/npm/v/react-firebase-input.svg)](https://www.npmjs.com/package/react-firebase-input) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Install
 npm  
@@ -30,7 +29,7 @@ yarn add react-firebase-input
 ## Usage
 
 #### Inputs <FirebaseInput/>
-- FirebaseInput requires dbRef and refKey props
+- FirebaseInput props
   - dbRef: reference to firebase realtime database
   - refKey: specific key in the reference object
 
@@ -65,12 +64,12 @@ Supports the following types
 - tel
 
 #### Forms <FirebaseForm/>
-- FirebaseForm needs the dbRef instance as a prop
+- FirebaseForm props
   - dbRef: reference to firebase realtime database
-- Every input needs a refkey and a value prop
+  - *Do not pass onSubmit prop to the Form*
+- FirebaseForm children input props
   - refkey: key in the database object
   - value: value of the key in the database object
-- *Do not pass an onSubmit prop to the Form*
 
 ```jsx
 import React, { useState } from 'react'
@@ -99,7 +98,9 @@ const Example = () => {
 ## TODO
 
 - [ ] Support date type
-- [ ] Test whether or not forms support checkboxes, radio buttons correctly
+- [ ] Prop validation and error handling
+- [ ] Support checkboxes, radio buttons correctly on forms
+- [ ] Automated test coverage
 
 ## License
 
