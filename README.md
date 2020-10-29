@@ -32,14 +32,28 @@ const Example = () => {
   return (
     <FirebaseTextInput
     dbRef={dbRef} 
-    refKey="students"/>
+    refKey="students"
+    type="text"
+    />
   )
 }
 
 ```
 
+Supports the following types 
+- text 
+- textarea
+- radio
+- checkbox
+- number
+- range
+- password
+- email
+- tel
+
 ## TODO
 - [ ] Form with multiple reference keys input that updates firebase DB on submit
+- [ ] Support date type
 
 ## License
 
