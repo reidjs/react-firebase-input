@@ -1,8 +1,14 @@
 # react-firebase-input
 
-> Sync inputs from your react app with your firebase realtime database.
+> Sync inputs and forms from React to your Firebase realtime database
+
+![input animation](input1.gif)
+On component mount, the values from your Firebase realtime database will set on your FirebaseInput components in react. As the user changes the input values they will update the values in the database. 
 
 🎉Now Supports Forms🎉  
+
+![form animation](form1.gif)
+If you want multiple inputs to submit simultaneously, wrap your inputs with the FirebaseForm component. 
 
 See how it works:  
 [Live Example](https://reidjs.github.io/react-firebase-input/)
@@ -23,8 +29,10 @@ yarn add react-firebase-input
 
 ## Usage
 
-#### Inputs
-- FirebaseInput
+#### Inputs <FirebaseInput/>
+- FirebaseInput requires dbRef and refKey props
+  - dbRef: reference to firebase realtime database
+  - refKey: specific key in the reference object
 
 ```jsx
 import React from 'react'
@@ -56,9 +64,13 @@ Supports the following types
 - email
 - tel
 
-#### Forms
+#### Forms <FirebaseForm/>
 - FirebaseForm needs the dbRef instance as a prop
+  - dbRef: reference to firebase realtime database
 - Every input needs a refkey and a value prop
+  - refkey: key in the database object
+  - value: value of the key in the database object
+- *Do not pass an onSubmit prop to the Form*
 
 ```jsx
 import React, { useState } from 'react'
@@ -87,7 +99,7 @@ const Example = () => {
 ## TODO
 
 - [ ] Support date type
-- [ ] Forms should support checkboxes, radiobuttons
+- [ ] Test whether or not forms support checkboxes, radio buttons correctly
 
 ## License
 
