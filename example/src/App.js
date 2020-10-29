@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import firebase from 'firebase'
-import { FirebaseTextInput } from 'react-firebase-input'
+import { FirebaseInput, FirebaseForm } from 'react-firebase-input'
 import 'react-firebase-input/dist/index.css'
 
 const exampleConfig = `{
@@ -23,6 +23,10 @@ const App = () => {
   const [refKey, setRefKey] = useState('')
   const [err, setError] = useState('')
   const [success, setSuccess] = useState('')
+
+  // FirebaseForm specific
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
   // const [radioInput, setRadioInput] = useState('')
   const updateConfigSecrets = async e => {
     setError('')
@@ -37,7 +41,7 @@ const App = () => {
   }
 
   const updateDbRef = async (e) => {
-    if (e) 
+    if (e)
       e.preventDefault()
     try {
       const c = JSON.parse(config)
@@ -74,81 +78,102 @@ const App = () => {
         </textarea>
         <h3>Database Reference</h3>
         <input onChange={handleDbRefChange} value={dbRefString}></input>
-        <h3>Reference Key (must not be blank)</h3>
-        <input onChange={handleKeyChange} value={refKey}></input>
+        <h3 style={{ color: (refKey ? '' : 'red'), marginBottom: '0' }}>Reference Key</h3>
+        <small>(Not necessary for FirebaseForm)</small>
+        <h3 />
+        <input onChange={handleKeyChange} style={{ border: refKey ? '' : '1px solid red' }} value={refKey}></input>
         <br />
         <br />
         <h3>Update Configuration</h3>
-        <button style={{background: 'green', color: 'white', padding: '10px'}} onClick={updateDbRef}>Submit</button>
+        <button style={{ background: 'green', color: 'white', padding: '10px' }} onClick={updateDbRef}>Submit</button>
 
         <p style={{ color: 'red' }}>{err}</p>
         <p style={{ color: 'green' }}>{success}</p>
       </form>
       <hr />
       <h1>Components</h1>
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <ul>
           <h2>Text Inputs</h2>
           <li>
-            <h3>FirebaseTextInput</h3>
+            <h3>FirebaseInput</h3>
             {/* <button onClick={submitConfig}>submit configuration</button> */}
-            <FirebaseTextInput dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
+            <FirebaseInput dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
           </li>
           <li>
-            <h3>FirebaseTextInput[type="email"]</h3>
-            <FirebaseTextInput type="email" dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
+            <h3>FirebaseInput[type="email"]</h3>
+            <FirebaseInput type="email" dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
           </li>
           <li>
-            <h3>FirebaseTextInput[type="password"]</h3>
-            <FirebaseTextInput type="password" dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
+            <h3>FirebaseInput[type="password"]</h3>
+            <FirebaseInput type="password" dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
           </li>
           <li>
-            <h3>FirebaseTextInput[type="tel"]</h3>
-            <FirebaseTextInput type="tel" dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
+            <h3>FirebaseInput[type="tel"]</h3>
+            <FirebaseInput type="tel" dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
           </li>
         </ul>
         <ul>
           <h2>Other Inputs</h2>
           <li>
-            <h3>FirebaseTextInput[type="checkbox"]</h3>
+            <h3>FirebaseInput[type="checkbox"]</h3>
             <div>
-              <FirebaseTextInput type="checkbox" dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
+              <FirebaseInput type="checkbox" dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
               <span>Sets the reference true or false</span>
             </div>
           </li>
           <li>
-            <h3>FirebaseTextInput[type="radio"]</h3>
+            <h3>FirebaseInput[type="radio"]</h3>
             <small>Sets the reference to the value of the radio button</small>
-            <form>
+            <ul>
               <div>
-                <FirebaseTextInput type="radio" dbRef={dbRef} refKey={refKey} value="cats" />
+                <FirebaseInput type="radio" dbRef={dbRef} refKey={refKey} value="cats" />
                 <span>Cats</span>
               </div>
               <div>
-                <FirebaseTextInput type="radio" dbRef={dbRef} refKey={refKey} value="dogs" />
+                <FirebaseInput type="radio" dbRef={dbRef} refKey={refKey} value="dogs" />
                 <span>Dogs</span>
               </div>
               <div>
-                <FirebaseTextInput type="radio" dbRef={dbRef} refKey={refKey} value="lizards" />
+                <FirebaseInput type="radio" dbRef={dbRef} refKey={refKey} value="lizards" />
                 <span>Lizards</span>
               </div>
-            </form>
+            </ul>
           </li>
           <li>
-            <h3>FirebaseTextInput[type="textarea"]</h3>
+            <h3>FirebaseInput[type="textarea"]</h3>
             <div>
-              <FirebaseTextInput type="textarea" dbRef={dbRef} refKey={refKey} />
+              <FirebaseInput type="textarea" dbRef={dbRef} refKey={refKey} />
             </div>
           </li>
           <li>
-            <h3>FirebaseTextInput[type="range"]</h3>
+            <h3>FirebaseInput[type="range"]</h3>
             <div>
-              <FirebaseTextInput type="range" dbRef={dbRef} refKey={refKey} min="0" max="100" />
+              <FirebaseInput type="range" dbRef={dbRef} refKey={refKey} min="0" max="100" />
+            </div>
+          </li>
+        </ul>
+        <ul>
+          <h2>Forms</h2>
+          <li>
+            <h3>FirebaseForm</h3>
+            <div>
+              <FirebaseForm style={{ border: '1px solid black', padding: '15px' }} dbRef={dbRef}>
+                <div>Example Form</div>
+                <p></p>
+                <div>Name</div>
+                <input onChange={(e) => setName(e.target.value)} value={name} refkey="name" />
+                <div style={{ margin: '10px 0' }}></div>
+                <div>Email</div>
+                <input onChange={(e) => setEmail(e.target.value)} value={email} refkey="email" type="email" />
+                <p></p>
+                <button>Submit</button>
+              </FirebaseForm>
             </div>
           </li>
         </ul>
       </div>
-      <div style={{ height: "900px" }}>
+      <div style={{ height: "100px" }}>
 
       </div>
     </div>

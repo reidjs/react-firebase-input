@@ -2,6 +2,8 @@
 
 > Sync inputs from your react app with your firebase realtime database.
 
+🎉Now Supports Forms🎉  
+
 See how it works:  
 [Live Example](https://reidjs.github.io/react-firebase-input/)
 
@@ -21,19 +23,22 @@ yarn add react-firebase-input
 
 ## Usage
 
+#### Inputs
+- FirebaseInput
+
 ```jsx
 import React from 'react'
 import firebaseDbInstance from '../your-project'
-import { FirebaseTextInput }from 'react-firebase-input'
+import { FirebaseInput }from 'react-firebase-input'
 
 const Example = () => {
-  const dbRef = firebaseDbInstance.ref('/school/grade5/')
+  const dbRef = firebaseDbInstance.ref('/school')
 
   return (
-    <FirebaseTextInput
-    dbRef={dbRef} 
-    refKey="students"
-    type="text"
+    <FirebaseInput
+      dbRef={dbRef} 
+      refKey="name"
+      type="text"
     />
   )
 }
@@ -51,9 +56,38 @@ Supports the following types
 - email
 - tel
 
+#### Forms
+- FirebaseForm needs the dbRef instance as a prop
+- Every input needs a refkey and a value prop
+
+```jsx
+import React, { useState } from 'react'
+import firebaseDbInstance from '../your-project'
+import { FirebaseForm }from 'react-firebase-input'
+
+const Example = () => {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+
+  const dbRef = firebaseDbInstance.ref('/user')
+
+  return (
+    <FirebaseForm dbRef={dbRef}>
+      <div>Example Form</div>
+      <div>Name</div>
+      <input onChange={(e) => setName(e.target.value)} value={name} refkey="name" />
+      <div>Email</div>
+      <input onChange={(e) => setEmail(e.target.value)} value={email} refkey="email" type="email" />
+      <button>Submit</button>
+    </FirebaseForm>
+  )
+}
+```
+
 ## TODO
-- [ ] Form with multiple reference keys input that updates firebase DB on submit
+
 - [ ] Support date type
+- [ ] Forms should support checkboxes, radiobuttons
 
 ## License
 

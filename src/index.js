@@ -1,6 +1,36 @@
 import React, { useState, useEffect } from 'react'
 
-export const FirebaseTextInput = (props) => {
+export const FirebaseForm = (props) => {
+  const { dbRef } = props
+
+  // needs dbRef
+  // each child needs a refkey (this is intentionally lowercase)
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const obj = {}
+    props.children.forEach(child => {
+      // console.log('child', child)
+      const refkey = child.props.refkey
+      if (refkey) {
+        const value = child.props.value
+        obj[refkey] = value
+      }
+    })
+    dbRef.update(obj)
+  }
+
+  const otherProps = Object.assign({}, props)
+  delete otherProps.onSubmit
+  delete otherProps.dbRef
+
+  return (
+    <form {...otherProps} onSubmit={handleSubmit}>
+      {props.children}
+    </form>
+  )
+}
+
+export const FirebaseInput = (props) => {
   const [value, setValue] = useState('')
   const [checked, setChecked] = useState('')
   const { dbRef, refKey } = props

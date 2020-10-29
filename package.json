@@ -1,7 +1,7 @@
 {
     "name": "react-firebase-input",
-    "version": "1.0.1",
-    "description": "Sync react inputs with firebase realtime database",
+    "version": "1.1.0",
+    "description": "Sync react inputs and forms with firebase realtime database",
     "author": "reidjs",
     "license": "MIT",
     "repository": "reidjs/react-firebase-input",
@@ -9,6 +9,15 @@
     "homepage": "https://reidjs.github.io/react-firebase-input/",
     "module": "dist/index.modern.js",
     "source": "src/index.js",
+    "keywords": [
+      "react",
+      "firebase",
+      "react-firebase",
+      "realtime database",
+      "html5",
+      "inputs",
+      "forms"
+    ],
     "engines": {
         "node": ">=10"
     },
