@@ -64,6 +64,7 @@ const App = () => {
 
   return (
     <div style={{ padding: "10px 30px" }}>
+      <a href="https://github.com/reidjs/react-firebase-input">Github Repo</a>
       <form>
         <h1>Firebase Config</h1>
         <h3>Paste your Firebase Realtime Database config JSON here</h3>

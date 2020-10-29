@@ -1,6 +1,6 @@
 {
     "name": "react-firebase-input",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Sync react inputs with firebase realtime database",
     "author": "reidjs",
     "license": "MIT",
