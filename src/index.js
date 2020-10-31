@@ -13,8 +13,8 @@ export const FirebaseForm = (props) => {
     props.children.forEach((child) => {
       if (child && child.props) {
         const refkey = child.props.refkey
-        if (refkey) {
-          const value = child.props.value
+        const value = child.props.value
+        if (refkey && value) {
           obj[refkey] = value
         }
       }
