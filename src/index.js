@@ -10,7 +10,7 @@ export const FirebaseForm = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault()
     const obj = {}
-    props.children.forEach(child => {
+    props.children.forEach((child) => {
       if (child && child.props) {
         const refkey = child.props.refkey
         if (refkey) {
@@ -21,17 +21,17 @@ export const FirebaseForm = (props) => {
     })
     if (newRecord) {
       const record = dbRef.push()
-      record.set(obj)
+      record
+        .set(obj)
         .then(() => {
-          if (callback)
-            callback(record.key)
+          if (callback) callback(record.key)
         })
         .catch((err) => {
-          if (callback)
-            callback(err)
+          if (callback) callback(err)
         })
     } else {
-      dbRef.update(obj)
+      dbRef
+        .update(obj)
         .then(() => {
           if (callback) {
             callback()
@@ -64,7 +64,7 @@ export const FirebaseInput = (props) => {
   // callback: optionally calls with result of update
   const { dbRef, refKey, callback } = props
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     if (!dbRef) {
       throw Error('no database reference')
     }
@@ -83,10 +83,11 @@ export const FirebaseInput = (props) => {
     }
   }
 
-  const updateDatabase = value => {
+  const updateDatabase = (value) => {
     const obj = {}
     obj[refKey] = value
-    dbRef.update(obj)
+    dbRef
+      .update(obj)
       .then(() => {
         if (callback) {
           callback()
@@ -99,10 +100,10 @@ export const FirebaseInput = (props) => {
       })
   }
 
-  const handleCheckboxChange = value => {
+  const handleCheckboxChange = (value) => {
     const obj = {}
 
-    dbRef.once('value').then(snapshot => {
+    dbRef.once('value').then((snapshot) => {
       if (snapshot.exists()) {
         const val = snapshot.val()
         if (val[refKey] === true) {
@@ -112,7 +113,8 @@ export const FirebaseInput = (props) => {
           obj[refKey] = true
           setChecked(true)
         }
-        dbRef.update(obj)
+        dbRef
+          .update(obj)
           .then(() => {
             if (callback) {
               callback()
@@ -126,10 +128,10 @@ export const FirebaseInput = (props) => {
       }
     })
   }
-  const handleRadioChange = value => {
+  const handleRadioChange = (value) => {
     const obj = {}
 
-    dbRef.once('value').then(snapshot => {
+    dbRef.once('value').then((snapshot) => {
       if (snapshot.exists()) {
         const val = snapshot.val()
         if (val[refKey] === value) {
@@ -137,7 +139,8 @@ export const FirebaseInput = (props) => {
         } else {
           obj[refKey] = value
         }
-        dbRef.update(obj)
+        dbRef
+          .update(obj)
           .then(() => {
             if (callback) {
               callback()
@@ -158,8 +161,7 @@ export const FirebaseInput = (props) => {
   delete otherProps.callback
 
   useEffect(() => {
-    if (!dbRef || !refKey)
-      return
+    if (!dbRef || !refKey) return
 
     if (props.type === 'checkbox') {
       dbRef.once('value').then((snapshot) => {
@@ -167,12 +169,13 @@ export const FirebaseInput = (props) => {
           // let val
           if (snapshot.val() && snapshot.val()[refKey]) {
             const val = snapshot.val()[refKey]
+            // eslint-disable-next-line
             setChecked(val == true)
           }
         }
       })
     } else if (props.type === 'radio') {
-      dbRef.on('value', snapshot => {
+      dbRef.on('value', (snapshot) => {
         if (snapshot.exists()) {
           // let val
           if (snapshot.val() && snapshot.val()[refKey]) {
@@ -182,7 +185,7 @@ export const FirebaseInput = (props) => {
         }
       })
     } else {
-      dbRef.on('value', snapshot => {
+      dbRef.on('value', (snapshot) => {
         if (snapshot.exists()) {
           // console.log('snapshot.val()', snapshot.val())
           let val
@@ -197,20 +200,38 @@ export const FirebaseInput = (props) => {
 
   if (props.type === 'textarea') {
     return (
-      <textarea onChange={handleChange} {...otherProps} disabled={props.disabled || (!dbRef || !refKey)} />
+      <textarea
+        onChange={handleChange}
+        {...otherProps}
+        disabled={props.disabled || !dbRef || !refKey}
+      />
     )
   } else if (props.type === 'checkbox') {
     return (
-      <input onChange={handleChange} {...otherProps} disabled={props.disabled || (!dbRef || !refKey)} checked={checked}></input>
+      <input
+        onChange={handleChange}
+        {...otherProps}
+        disabled={props.disabled || !dbRef || !refKey}
+        checked={checked}
+      />
     )
   } else if (props.type === 'radio') {
     return (
-      <input onChange={handleChange} {...otherProps} disabled={props.disabled || (!dbRef || !refKey)} checked={checked}></input>
+      <input
+        onChange={handleChange}
+        {...otherProps}
+        disabled={props.disabled || !dbRef || !refKey}
+        checked={checked}
+      />
     )
   } else {
     return (
-      <input onChange={handleChange} value={value} {...otherProps} disabled={props.disabled || (!dbRef || !refKey)}></input>
+      <input
+        onChange={handleChange}
+        value={value}
+        {...otherProps}
+        disabled={props.disabled || !dbRef || !refKey}
+      />
     )
   }
 }
-

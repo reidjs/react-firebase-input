@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import firebase from 'firebase'
 import { FirebaseInput, FirebaseForm } from 'react-firebase-input'
 import 'react-firebase-input/dist/index.css'
@@ -70,7 +70,7 @@ const App = () => {
     setUpdateRecordResult(msg)
   }
 
-  const updateDbRef = async (e) => {
+  const updateDbRef = useCallback(async (e) => {
     if (e)
       e.preventDefault()
     try {
@@ -88,13 +88,13 @@ const App = () => {
     } catch (err) {
       setError(err.message)
     }
-  }
+  }, [config, db, dbRefString])
   useEffect(() => {
     if (config) {
       localStorage.setItem('config', config)
       updateDbRef()
     }
-  }, [config])
+  }, [config, updateDbRef])
 
   return (
     <div style={{ padding: "10px 30px" }}>
@@ -110,7 +110,7 @@ const App = () => {
         <input onChange={handleDbRefChange} value={dbRefString}></input>
         <h3 style={{ color: (refKey ? '' : 'red'), marginBottom: '0' }}>Reference Key</h3>
         <small>(Not necessary for FirebaseForm)</small>
-        <h3 />
+        <p />
         <input onChange={handleKeyChange} style={{ border: refKey ? '' : '1px solid red' }} value={refKey}></input>
         <br />
         <br />

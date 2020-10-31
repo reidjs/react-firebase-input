@@ -1,7 +1,13 @@
-import { FirebaseTextInput } from '.'
+import { FirebaseInput, FirebaseForm } from '.'
 
-describe('FirebaseTextInput', () => {
+describe('FirebaseInput', () => {
   it('is truthy', () => {
-    expect(FirebaseTextInput).toBeTruthy()
+    expect(FirebaseInput).toBeTruthy()
+  })
+})
+
+describe('FirebaseForm', () => {
+  it('is truthy', () => {
+    expect(FirebaseForm).toBeTruthy()
   })
 })
