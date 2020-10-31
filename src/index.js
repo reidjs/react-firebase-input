@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react'
 
 export const FirebaseForm = (props) => {
+  // dbRef: required prop
   const { dbRef } = props
 
-  // needs dbRef
-  // each child needs a refkey (this is intentionally lowercase)
+  // Each child needs a refkey (this is intentionally lowercase)
   const handleSubmit = (e) => {
     e.preventDefault()
     const obj = {}
     props.children.forEach(child => {
-      // console.log('child', child)
       const refkey = child.props.refkey
       if (refkey) {
         const value = child.props.value
@@ -24,7 +23,7 @@ export const FirebaseForm = (props) => {
   delete otherProps.dbRef
 
   return (
-    <form {...otherProps} onSubmit={handleSubmit}>
+    <form {...otherProps} onSubmit={props.onSubmit || handleSubmit}>
       {props.children}
     </form>
   )
