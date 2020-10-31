@@ -122,7 +122,7 @@ const App = () => {
       </form>
       <hr />
       <h1>Components</h1>
-      <div style={{color: 'red'}}>{inputError}</div>
+      <div style={{ color: 'red' }}>{inputError}</div>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <ul>
           <h2>Text Inputs</h2>
@@ -130,7 +130,7 @@ const App = () => {
             <h3>FirebaseInput</h3>
             {/* <button onClick={submitConfig}>submit configuration</button> */}
             <FirebaseInput callback={handleInputError} dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
-            
+
           </li>
           <li>
             <h3>FirebaseInput[type="email"]</h3>
@@ -200,7 +200,7 @@ const App = () => {
                 <input onChange={(e) => setEmail(e.target.value)} value={email} refkey="email" type="email" />
                 <p></p>
                 <button>Submit</button>
-                <div style={{color: 'red'}}>{newRecordResult}</div>
+                <div style={{ color: 'red' }}>{newRecordResult}</div>
               </FirebaseForm>
             </div>
             <div>
@@ -214,12 +214,24 @@ const App = () => {
                 <input onChange={(e) => setEmail(e.target.value)} value={email} refkey="email" type="email" />
                 <p></p>
                 <button>Submit</button>
-                <div style={{color: 'red'}}>{updateRecordResult}</div>
+                <div style={{ color: 'red' }}>{updateRecordResult}</div>
               </FirebaseForm>
             </div>
           </li>
         </ul>
       </div>
+      {/* <hr /> */}
+      {/* <h1>Test Area</h1>
+      <FirebaseForm dbRef={dbRef}>
+        <div>Uncontrolled input (state not controlled by react)</div>
+        <input refkey="testing"/>
+        <div>
+          <div>Nested input</div>
+          <input refkey="testing2"/>
+        </div>
+        <div></div>
+        <button>Submit</button>
+      </FirebaseForm> */}
       <div style={{ height: "100px" }}>
 
       </div>

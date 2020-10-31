@@ -91,11 +91,11 @@ const Example = () => {
       <div>Name</div>
       <input onChange={(e) => setName(e.target.value)} value={name} refkey="name" />
       <div>Email</div>
-      <input onChange={(e) => setEmail(e.target.value)} value={email} refkey="email" type="email" />
+      {/* State doesn't have to be controlled by React*/}
+      <input refkey="email" type="email" />
       <div>
-        {/* NOTE: Only collects input data from ONE LEVEL deep. If the inputs are nested, they are ignored*/}
-        <div>Ignore this data:</div>
-        <input type="text"/>
+        <div>Also supports nested inputs</div>
+        <input refkey="agreeToTOS" type="checkbox"/>
       </div>
       <button>Submit</button>
     </FirebaseForm>
@@ -120,24 +120,6 @@ const Example = () => {
 - [ ] Prop validation and error handling
 - [ ] Support checkboxes, radio buttons correctly on forms
 - [ ] Automated test coverage
-- [LIMITATION] Forms don't work for inputs > 1 level deep 
-```js
-<FirebaseForm>
-  <input refkey="foo">
-  <div>
-    <input refkey="bar">
-  </div>
-  <button />
-</FirebaseForm>
-```
-The "foo" input works, but "bar" is ignored.
-
-children.children are opaque according to 
-https://stackoverflow.com/questions/35930825/is-it-possible-to-deep-traverse-react-children-without-rendering 
-
-For now, this will just be a limitation of forms, i.e., only one-level-deep inputs are affected
-
-
 
 ## License
 

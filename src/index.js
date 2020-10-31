@@ -1,24 +1,31 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, createRef } from 'react'
 
-export const FirebaseForm = (props) => {
+    // https://stackoverflow.com/questions/2712136/how-do-i-make-this-loop-all-children-recursively
+// const result = {}
+const allDescendantsWithRefKey = (node, result = {}) => {
+  for (let i = 0; i < node.childNodes.length; i++) {
+    const childNode = node.childNodes[i];
+    allDescendantsWithRefKey(childNode, result);
+    if (childNode.getAttributeNode) {
+      const refkeyAttr = childNode.getAttributeNode('refkey')
+      if (refkeyAttr) {
+        result[refkeyAttr.value] = childNode.value
+      }
+    }
+  }
+  return result
+}
+
+export const FirebaseForm = props => {
   // dbRef: required prop
   // newRecord: optional boolean, pushes a new record and sets the form values instead of changes the existing one.
   // callback: optional callback for newRecord success or error
   const { dbRef, newRecord, callback } = props
-
+  const ref = createRef()
   // Each child needs a refkey (this is intentionally lowercase)
   const handleSubmit = (e) => {
     e.preventDefault()
-    const obj = {}
-    props.children.forEach((child) => {
-      if (child && child.props) {
-        const refkey = child.props.refkey
-        const value = child.props.value || child.value
-        if (refkey && value) {
-          obj[refkey] = value
-        }
-      }
-    })
+    const obj = allDescendantsWithRefKey(ref.current)
     if (newRecord) {
       const record = dbRef.push()
       record
@@ -52,7 +59,7 @@ export const FirebaseForm = (props) => {
   delete otherProps.callback
 
   return (
-    <form {...otherProps} onSubmit={props.onSubmit || handleSubmit}>
+    <form {...otherProps} ref={ref} onSubmit={props.onSubmit || handleSubmit}>
       {props.children}
     </form>
   )
