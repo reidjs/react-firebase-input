@@ -9,7 +9,6 @@
     "homepage": "https://reidjs.github.io/react-firebase-input/",
     "module": "dist/index.modern.js",
     "source": "src/index.js",
-    "publishConfig": { "registry": "https://npm.pkg.github.com/" },
     "keywords": [
         "react",
         "firebase",
