@@ -60,7 +60,7 @@ export const FirebaseForm = (props) => {
 
 export const FirebaseInput = (props) => {
   const [value, setValue] = useState('')
-  const [checked, setChecked] = useState('')
+  const [checked, setChecked] = useState(false)
   // callback: optionally calls with result of update
   const { dbRef, refKey, callback } = props
 
@@ -164,21 +164,21 @@ export const FirebaseInput = (props) => {
     if (props.type === 'checkbox') {
       dbRef.once('value').then((snapshot) => {
         if (snapshot.exists()) {
-          let val
+          // let val
           if (snapshot.val() && snapshot.val()[refKey]) {
-            val = snapshot.val()[refKey]
+            const val = snapshot.val()[refKey]
+            setChecked(val == true)
           }
-          setChecked(val == true)
         }
       })
     } else if (props.type === 'radio') {
       dbRef.on('value', snapshot => {
         if (snapshot.exists()) {
-          let val
+          // let val
           if (snapshot.val() && snapshot.val()[refKey]) {
-            val = snapshot.val()[refKey]
+            const val = snapshot.val()[refKey]
+            setChecked(val === props.value)
           }
-          setChecked(val === props.value)
         }
       })
     } else {
