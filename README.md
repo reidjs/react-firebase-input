@@ -6,9 +6,9 @@
 ![input animation](input1.gif)  
 On component mount, the values from your Firebase realtime database will set on your FirebaseInput components in react. As the user changes the input values they will update the values in the database. 
 
-🎉Now Supports Forms🎉  
+✅ Supports Forms  
 
-![form animation](form1.gif)  
+![form animation](form1.gif)   
 If you want multiple inputs to submit simultaneously, wrap your inputs with the FirebaseForm component. 
 
 See more examples and experiment with your own database:  
@@ -32,6 +32,7 @@ yarn add react-firebase-input
 - FirebaseInput props
   - dbRef: reference to firebase realtime database
   - refKey: specific key in the reference object
+  - callback (optional): function that is called with the error result, or no params on success
 
 ```jsx
 import React from 'react'
@@ -66,7 +67,9 @@ Supports the following types
 #### Forms <FirebaseForm/>
 - FirebaseForm props
   - dbRef: reference to firebase realtime database
-  - *Do not pass onSubmit prop to the Form*
+  - newRecord (optional): boolean, if true, will create a new record under the provided reference
+  - callback (optional): function called with error result, or the key of the new object created 
+  - *If you pass an onSubmit prop to the Form, it will over-ride most of this component's functionality*
 - FirebaseForm children input props
   - refkey: key in the database object
   - value: value of the key in the database object
@@ -95,8 +98,20 @@ const Example = () => {
 }
 ```
 
-## TODO
+## Development
+1. Clone the git repo
+2. cd `react-firebase-input`
+3. `npm start`
+4. Open a new terminal or tab
+5. cd `react-firebase-input/example`
+6. `npm start`
+7. Open browser to localhost:3000
 
+
+#### TODO
+
+- [ ] [BUG] Radios and Checkbox Inputs are can become out-of-sync on frontend after permission error (i.e. fail a firebase update)
+  - The fix is probably to ONLY change the frontend state upon successful update on the backend.
 - [ ] Support date type
 - [ ] Prop validation and error handling
 - [ ] Support checkboxes, radio buttons correctly on forms
