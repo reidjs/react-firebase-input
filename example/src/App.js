@@ -22,7 +22,10 @@ const App = () => {
   const [config, setConfig] = useState(localStorage.getItem('config') || '')
   const [refKey, setRefKey] = useState('')
   const [err, setError] = useState('')
+  const [inputError, setInputError] = useState('')
   const [success, setSuccess] = useState('')
+  const [newRecordResult, setNewRecordResult] = useState('')
+  const [updateRecordResult, setUpdateRecordResult] = useState('')
 
   // FirebaseForm specific
   const [name, setName] = useState('')
@@ -38,6 +41,33 @@ const App = () => {
   }
   const handleKeyChange = e => {
     setRefKey(e.target.value)
+  }
+
+  const handleInputError = err => {
+    let msg = err
+    if (err && err.message) {
+      msg = err.message
+    }
+    setInputError(msg)
+  }
+
+  const newRecordCallback = (res) => {
+    console.log('res', res)
+    let msg = res
+    if (res && res.message) {
+      msg = res.message
+    }
+    setNewRecordResult(msg)
+  }
+
+  const updateRecordCallback = (res) => {
+    console.log('res', res)
+    let msg = res
+    if (res && res.message) {
+      msg = res.message
+    }
+    console.log('msg', msg)
+    setUpdateRecordResult(msg)
   }
 
   const updateDbRef = async (e) => {
@@ -92,25 +122,27 @@ const App = () => {
       </form>
       <hr />
       <h1>Components</h1>
+      <div style={{color: 'red'}}>{inputError}</div>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <ul>
           <h2>Text Inputs</h2>
           <li>
             <h3>FirebaseInput</h3>
             {/* <button onClick={submitConfig}>submit configuration</button> */}
-            <FirebaseInput dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
+            <FirebaseInput callback={handleInputError} dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
+            
           </li>
           <li>
             <h3>FirebaseInput[type="email"]</h3>
-            <FirebaseInput type="email" dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
+            <FirebaseInput callback={handleInputError} type="email" dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
           </li>
           <li>
             <h3>FirebaseInput[type="password"]</h3>
-            <FirebaseInput type="password" dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
+            <FirebaseInput callback={handleInputError} type="password" dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
           </li>
           <li>
             <h3>FirebaseInput[type="tel"]</h3>
-            <FirebaseInput type="tel" dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
+            <FirebaseInput callback={handleInputError} type="tel" dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
           </li>
         </ul>
         <ul>
@@ -118,7 +150,7 @@ const App = () => {
           <li>
             <h3>FirebaseInput[type="checkbox"]</h3>
             <div>
-              <FirebaseInput type="checkbox" dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
+              <FirebaseInput callback={handleInputError} type="checkbox" dbRef={dbRef} refKey={refKey} placeholder="Edit text here!" />
               <span>Sets the reference true or false</span>
             </div>
           </li>
@@ -127,15 +159,15 @@ const App = () => {
             <small>Sets the reference to the value of the radio button</small>
             <ul>
               <div>
-                <FirebaseInput type="radio" dbRef={dbRef} refKey={refKey} value="cats" />
+                <FirebaseInput callback={handleInputError} type="radio" dbRef={dbRef} refKey={refKey} value="cats" />
                 <span>Cats</span>
               </div>
               <div>
-                <FirebaseInput type="radio" dbRef={dbRef} refKey={refKey} value="dogs" />
+                <FirebaseInput callback={handleInputError} type="radio" dbRef={dbRef} refKey={refKey} value="dogs" />
                 <span>Dogs</span>
               </div>
               <div>
-                <FirebaseInput type="radio" dbRef={dbRef} refKey={refKey} value="lizards" />
+                <FirebaseInput callback={handleInputError} type="radio" dbRef={dbRef} refKey={refKey} value="lizards" />
                 <span>Lizards</span>
               </div>
             </ul>
@@ -143,23 +175,23 @@ const App = () => {
           <li>
             <h3>FirebaseInput[type="textarea"]</h3>
             <div>
-              <FirebaseInput type="textarea" dbRef={dbRef} refKey={refKey} />
+              <FirebaseInput callback={handleInputError} type="textarea" dbRef={dbRef} refKey={refKey} />
             </div>
           </li>
           <li>
             <h3>FirebaseInput[type="range"]</h3>
             <div>
-              <FirebaseInput type="range" dbRef={dbRef} refKey={refKey} min="0" max="100" />
+              <FirebaseInput callback={handleInputError} type="range" dbRef={dbRef} refKey={refKey} min="0" max="100" />
             </div>
           </li>
         </ul>
         <ul>
           <h2>Forms</h2>
-          <li>
-            <h3>FirebaseForm</h3>
+          <h3>FirebaseForm</h3>
+          <li style={{ display: 'flex flex-col', flexWrap: 'wrap' }}>
             <div>
-              <FirebaseForm style={{ border: '1px solid black', padding: '15px' }} dbRef={dbRef}>
-                <div>Example Form</div>
+              <FirebaseForm callback={newRecordCallback} style={{ border: '1px solid black', padding: '15px' }} newRecord={true} dbRef={dbRef}>
+                <div>Example Form (New Record)</div>
                 <p></p>
                 <div>Name</div>
                 <input onChange={(e) => setName(e.target.value)} value={name} refkey="name" />
@@ -168,6 +200,21 @@ const App = () => {
                 <input onChange={(e) => setEmail(e.target.value)} value={email} refkey="email" type="email" />
                 <p></p>
                 <button>Submit</button>
+                <div style={{color: 'red'}}>{newRecordResult}</div>
+              </FirebaseForm>
+            </div>
+            <div>
+              <FirebaseForm callback={updateRecordCallback} style={{ border: '1px solid black', padding: '15px' }} dbRef={dbRef}>
+                <div>Example Form (Edit Record)</div>
+                <p></p>
+                <div>Name</div>
+                <input onChange={(e) => setName(e.target.value)} value={name} refkey="name" />
+                <div style={{ margin: '10px 0' }}></div>
+                <div>Email</div>
+                <input onChange={(e) => setEmail(e.target.value)} value={email} refkey="email" type="email" />
+                <p></p>
+                <button>Submit</button>
+                <div style={{color: 'red'}}>{updateRecordResult}</div>
               </FirebaseForm>
             </div>
           </li>
