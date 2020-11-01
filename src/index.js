@@ -31,7 +31,7 @@ export const FirebaseForm = props => {
       record
         .set(obj)
         .then(() => {
-          if (callback) callback(record.key)
+          if (callback) callback(null, record.key)
         })
         .catch((err) => {
           if (callback) callback(err)
@@ -41,7 +41,7 @@ export const FirebaseForm = props => {
         .update(obj)
         .then(() => {
           if (callback) {
-            callback()
+            callback(null)
           }
         })
         .catch((err) => {
@@ -97,7 +97,7 @@ export const FirebaseInput = (props) => {
       .update(obj)
       .then(() => {
         if (callback) {
-          callback()
+          callback(null)
         }
       })
       .catch((err) => {
@@ -124,7 +124,7 @@ export const FirebaseInput = (props) => {
           .update(obj)
           .then(() => {
             if (callback) {
-              callback()
+              callback(null)
             }
           })
           .catch((err) => {
@@ -150,7 +150,7 @@ export const FirebaseInput = (props) => {
           .update(obj)
           .then(() => {
             if (callback) {
-              callback()
+              callback(null)
             }
           })
           .catch((err) => {
