@@ -1,15 +1,25 @@
 import React, { useState, useEffect, createRef } from 'react'
 
-    // https://stackoverflow.com/questions/2712136/how-do-i-make-this-loop-all-children-recursively
-// const result = {}
+// https://stackoverflow.com/questions/2712136/how-do-i-make-this-loop-all-children-recursively
 const allDescendantsWithRefKey = (node, result = {}) => {
   for (let i = 0; i < node.childNodes.length; i++) {
     const childNode = node.childNodes[i];
     allDescendantsWithRefKey(childNode, result);
     if (childNode.getAttributeNode) {
       const refkeyAttr = childNode.getAttributeNode('refkey')
+      const type = childNode.getAttributeNode('type')
       if (refkeyAttr) {
-        result[refkeyAttr.value] = childNode.value
+        const refkey = refkeyAttr.value
+        if (type && (type.value === 'checkbox' || type.value === 'radio')) {
+          if (type.value === 'checkbox') {
+            result[refkey] = childNode.checked
+          }
+          if (type.value === 'radio' && childNode.checked) {
+            result[refkey] = childNode.value
+          }
+        } else {
+          result[refkey] = childNode.value
+        }
       }
     }
   }
@@ -72,6 +82,7 @@ export const FirebaseInput = (props) => {
   const { dbRef, refKey, callback } = props
 
   const handleChange = (e) => {
+    const obj = {}
     if (!dbRef) {
       throw Error('no database reference')
     }
@@ -80,19 +91,18 @@ export const FirebaseInput = (props) => {
     }
     switch (props.type) {
       case 'checkbox':
-        handleCheckboxChange(e.target.value)
+        handleCheckboxChange()
         return
       case 'radio':
         handleRadioChange(e.target.value)
         return
       default:
-        updateDatabase(e.target.value)
+        obj[refKey] = e.target.value
+        updateDatabase(obj)
     }
   }
 
-  const updateDatabase = (value) => {
-    const obj = {}
-    obj[refKey] = value
+  const updateDatabase = (obj) => {
     dbRef
       .update(obj)
       .then(() => {
@@ -107,7 +117,7 @@ export const FirebaseInput = (props) => {
       })
   }
 
-  const handleCheckboxChange = (value) => {
+  const handleCheckboxChange = () => {
     const obj = {}
 
     dbRef.once('value').then((snapshot) => {
@@ -120,19 +130,11 @@ export const FirebaseInput = (props) => {
           obj[refKey] = true
           setChecked(true)
         }
-        dbRef
-          .update(obj)
-          .then(() => {
-            if (callback) {
-              callback(null)
-            }
-          })
-          .catch((err) => {
-            if (callback) {
-              callback(err)
-            }
-          })
+      } else {
+        // obj doesnt exist in DB, create it with the key whatever refKey is
+        obj[refKey] = checked
       }
+      updateDatabase(obj)
     })
   }
   const handleRadioChange = (value) => {
@@ -146,19 +148,13 @@ export const FirebaseInput = (props) => {
         } else {
           obj[refKey] = value
         }
-        dbRef
-          .update(obj)
-          .then(() => {
-            if (callback) {
-              callback(null)
-            }
-          })
-          .catch((err) => {
-            if (callback) {
-              callback(err)
-            }
-          })
+      } else {
+        // object doesn't exist in DB, set it to the value of the radio input
+        if (checked) {
+          obj[refKey] = value
+        }
       }
+      updateDatabase(obj)
     })
   }
 
@@ -194,7 +190,6 @@ export const FirebaseInput = (props) => {
     } else {
       dbRef.on('value', (snapshot) => {
         if (snapshot.exists()) {
-          // console.log('snapshot.val()', snapshot.val())
           let val
           if (snapshot.val() && snapshot.val()[refKey]) {
             val = snapshot.val()[refKey]

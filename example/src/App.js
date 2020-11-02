@@ -52,7 +52,6 @@ const App = () => {
   }
 
   const newRecordCallback = (res) => {
-    console.log('res', res)
     let msg = res
     if (res && res.message) {
       msg = res.message
@@ -61,12 +60,10 @@ const App = () => {
   }
 
   const updateRecordCallback = (res) => {
-    console.log('res', res)
     let msg = res
     if (res && res.message) {
       msg = res.message
     }
-    console.log('msg', msg)
     setUpdateRecordResult(msg)
   }
 
@@ -188,30 +185,69 @@ const App = () => {
         <ul>
           <h2>Forms</h2>
           <h3>FirebaseForm</h3>
-          <li style={{ display: 'flex flex-col', flexWrap: 'wrap' }}>
+          <li style={{ display: 'flex flex-col', marginBottom: '10px', flexWrap: 'wrap' }}>
             <div>
               <FirebaseForm callback={newRecordCallback} style={{ border: '1px solid black', padding: '15px' }} newRecord={true} dbRef={dbRef}>
-                <div>Example Form (New Record)</div>
+                <div>Example Form <span style={{ color: 'green' }}>(New Record)</span></div>
                 <p></p>
                 <div>Name</div>
                 <input onChange={(e) => setName(e.target.value)} value={name} refkey="name" />
                 <div style={{ margin: '10px 0' }}></div>
                 <div>Email</div>
                 <input onChange={(e) => setEmail(e.target.value)} value={email} refkey="email" type="email" />
+                <p></p>
+                <div>
+                  <span>
+                    <input refkey="race" name="race" type="radio" value="human" />
+                    <span>Human</span>
+                  </span>
+                  <span>
+                    <input refkey="race" name="race" type="radio" value="robot" />
+                    <span>Robot</span>
+                  </span>
+                  <span>
+                    <input refkey="race" name="race" type="radio" value="alien" />
+                    <span>Alien</span>
+                  </span>
+                </div>
+                <p></p>
+                <input type="checkbox" refkey="agreeToForm" />
+                <span>Agree?</span>
+
                 <p></p>
                 <button>Submit</button>
                 <div style={{ color: 'red' }}>{newRecordResult}</div>
               </FirebaseForm>
             </div>
+          </li>
+          <li>
             <div>
               <FirebaseForm callback={updateRecordCallback} style={{ border: '1px solid black', padding: '15px' }} dbRef={dbRef}>
-                <div>Example Form (Edit Record)</div>
+                <div>Example Form <span style={{ color: 'black' }}>(Edit Record)</span></div>
                 <p></p>
                 <div>Name</div>
                 <input onChange={(e) => setName(e.target.value)} value={name} refkey="name" />
                 <div style={{ margin: '10px 0' }}></div>
                 <div>Email</div>
                 <input onChange={(e) => setEmail(e.target.value)} value={email} refkey="email" type="email" />
+                <p></p>
+                <div>
+                  <span>
+                    <input refkey="race" name="race" type="radio" value="human" />
+                    <span>Human</span>
+                  </span>
+                  <span>
+                    <input refkey="race" name="race" type="radio" value="robot" />
+                    <span>Robot</span>
+                  </span>
+                  <span>
+                    <input refkey="race" name="race" type="radio" value="alien" />
+                    <span>Alien</span>
+                  </span>
+                </div>
+                <p></p>
+                <input type="checkbox" refkey="agreeToForm" />
+                <span>Agree?</span>
                 <p></p>
                 <button>Submit</button>
                 <div style={{ color: 'red' }}>{updateRecordResult}</div>
