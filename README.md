@@ -3,15 +3,14 @@
 > Sync inputs and forms from React to your Firebase realtime database  
 [![NPM](https://img.shields.io/npm/v/react-firebase-input.svg)](https://www.npmjs.com/package/react-firebase-input) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)  
 
-![text input](textinput.gif)  
-![checkbox](checkbox.gif)  
 On component mount, the values from your Firebase realtime database will set on your FirebaseInput components in react. As the user changes the input values they will update the values in the database. 
+![text input](textinput.gif)  
 
 ✅ Supports Forms  
 
-![new form](newform.gif)   
-![edit form](editform.gif)   
 If you want multiple inputs to submit simultaneously, wrap your inputs with the FirebaseForm component. 
+![new form](newform.gif)   
+
 
 See more examples and experiment with your own database:  
 [Live Example](https://reidjs.github.io/react-firebase-input/)
@@ -55,7 +54,7 @@ const Example = () => {
 
 ```
 
-Supports the following types 
+Supports the following types:
 - text 
 - textarea
 - radio
@@ -113,15 +112,6 @@ const Example = () => {
 5. cd `react-firebase-input/example`
 6. `npm start`
 7. Open browser to localhost:3000
-
-
-#### TODO
-- [ ] [BUG] Radios and Checkbox Inputs are can become out-of-sync on frontend after permission error (i.e. fail a firebase update)
-  - The fix is probably to ONLY change the frontend state upon successful update on the backend.
-- [ ] Support date type
-- [ ] Prop validation and better error handling
-- [ ] Automated test coverage
-- [ ] Turn todos into issues
 
 ## License
 

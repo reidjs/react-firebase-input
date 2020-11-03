@@ -1,5 +1,6 @@
 import React, { useState, useEffect, createRef } from 'react'
 
+// Helper function for forms, loops through all the children for attribute 'refkey' to grab values from.
 // https://stackoverflow.com/questions/2712136/how-do-i-make-this-loop-all-children-recursively
 const allDescendantsWithRefKey = (node, result = {}) => {
   for (let i = 0; i < node.childNodes.length; i++) {
@@ -26,6 +27,18 @@ const allDescendantsWithRefKey = (node, result = {}) => {
   return result
 }
 
+/**
+ * <FirebaseForm>
+ * <input refkey="foo" value="bar" />
+ * <button>Submit</button>
+ * </FirebaseForm>
+ * 
+ * Wrap inputs with a refkey="" prop to create a form that submits to your firebase realtime database instance
+ * 
+ * @dbRef     { reference } reference to object within firebase realtime database, e.g., database.ref('/foo/bar')
+ * @newRecord { bool }      if set to a truthy value, pushes a new object to the database at the reference.
+ * @callback  { function }  called with (null, newRecord.key) on success, or (error) on error
+ */
 export const FirebaseForm = props => {
   // dbRef: required prop
   // newRecord: optional boolean, pushes a new record and sets the form values instead of changes the existing one.
@@ -75,14 +88,25 @@ export const FirebaseForm = props => {
   )
 }
 
+
+/** 
+ * <FirebaseInput />
+ * 
+ * Returns firebase component that syncs to realtime database 
+ *   
+ * @dbRef     { reference } to the firebase database instance e.g. database.ref('users/john/')
+ * @refKey    { string }    the specific key in the ref, e.g., for 'users/john/email' it would be 'email'
+ * @callback  { function }  callback function, called with (null, value) on success and (err) on fail.
+ * 
+ */
 export const FirebaseInput = (props) => {
   const [value, setValue] = useState('')
   const [checked, setChecked] = useState(false)
-  // callback: optionally calls with result of update
   const { dbRef, refKey, callback } = props
 
   const handleChange = (e) => {
     const obj = {}
+    const value = e.target.value
     if (!dbRef) {
       throw Error('no database reference')
     }
@@ -94,20 +118,20 @@ export const FirebaseInput = (props) => {
         handleCheckboxChange()
         return
       case 'radio':
-        handleRadioChange(e.target.value)
+        handleRadioChange(value)
         return
       default:
-        obj[refKey] = e.target.value
-        updateDatabase(obj)
+        obj[refKey] = value
+        updateDatabase(obj, value)
     }
   }
 
-  const updateDatabase = (obj) => {
+  const updateDatabase = (obj, value) => {
     dbRef
       .update(obj)
       .then(() => {
         if (callback) {
-          callback(null)
+          callback(null, value)
         }
       })
       .catch((err) => {
@@ -131,10 +155,10 @@ export const FirebaseInput = (props) => {
           setChecked(true)
         }
       } else {
-        // obj doesnt exist in DB, create it with the key whatever refKey is
+        // if obj doesnt exist in DB, it is created with the key whatever refKey is
         obj[refKey] = checked
       }
-      updateDatabase(obj)
+      updateDatabase(obj, checked)
     })
   }
   const handleRadioChange = (value) => {
@@ -149,12 +173,12 @@ export const FirebaseInput = (props) => {
           obj[refKey] = value
         }
       } else {
-        // object doesn't exist in DB, set it to the value of the radio input
+        // if object doesn't exist in DB, it is set to the value of the radio input
         if (checked) {
           obj[refKey] = value
         }
       }
-      updateDatabase(obj)
+      updateDatabase(obj, value)
     })
   }
 
@@ -162,6 +186,7 @@ export const FirebaseInput = (props) => {
   delete otherProps.dbRef
   delete otherProps.refKey
   delete otherProps.callback
+
 
   useEffect(() => {
     if (!dbRef || !refKey) return
@@ -180,7 +205,6 @@ export const FirebaseInput = (props) => {
     } else if (props.type === 'radio') {
       dbRef.on('value', (snapshot) => {
         if (snapshot.exists()) {
-          // let val
           if (snapshot.val() && snapshot.val()[refKey]) {
             const val = snapshot.val()[refKey]
             setChecked(val === props.value)
@@ -230,7 +254,7 @@ export const FirebaseInput = (props) => {
     return (
       <input
         onChange={handleChange}
-        value={value}
+        value={props.value || value}
         {...otherProps}
         disabled={props.disabled || !dbRef || !refKey}
       />
