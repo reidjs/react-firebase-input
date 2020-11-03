@@ -4,9 +4,10 @@ import React, { useState, useEffect, createRef } from 'react'
 // https://stackoverflow.com/questions/2712136/how-do-i-make-this-loop-all-children-recursively
 const allDescendantsWithRefKey = (node, result = {}) => {
   for (let i = 0; i < node.childNodes.length; i++) {
-    const childNode = node.childNodes[i];
-    allDescendantsWithRefKey(childNode, result);
+    const childNode = node.childNodes[i]
+    allDescendantsWithRefKey(childNode, result)
     if (childNode.getAttributeNode) {
+      // Only children with refkey attribute are taken into account.
       const refkeyAttr = childNode.getAttributeNode('refkey')
       const type = childNode.getAttributeNode('type')
       if (refkeyAttr) {
@@ -29,8 +30,8 @@ const allDescendantsWithRefKey = (node, result = {}) => {
 
 /**
  * <FirebaseForm>
- * <input refkey="foo" value="bar" />
- * <button>Submit</button>
+ *   <input refkey="foo" value="bar" />
+ *   <button>Submit</button>
  * </FirebaseForm>
  * 
  * Wrap inputs with a refkey="" prop to create a form that submits to your firebase realtime database instance
@@ -39,13 +40,10 @@ const allDescendantsWithRefKey = (node, result = {}) => {
  * @newRecord { bool }      if set to a truthy value, pushes a new object to the database at the reference.
  * @callback  { function }  called with (null, newRecord.key) on success, or (error) on error
  */
-export const FirebaseForm = props => {
-  // dbRef: required prop
-  // newRecord: optional boolean, pushes a new record and sets the form values instead of changes the existing one.
-  // callback: optional callback for newRecord success or error
+export const FirebaseForm = (props) => {
   const { dbRef, newRecord, callback } = props
   const ref = createRef()
-  // Each child needs a refkey (this is intentionally lowercase)
+
   const handleSubmit = (e) => {
     e.preventDefault()
     const obj = allDescendantsWithRefKey(ref.current)
@@ -88,7 +86,6 @@ export const FirebaseForm = props => {
   )
 }
 
-
 /** 
  * <FirebaseInput />
  * 
@@ -97,7 +94,6 @@ export const FirebaseForm = props => {
  * @dbRef     { reference } to the firebase database instance e.g. database.ref('users/john/')
  * @refKey    { string }    the specific key in the ref, e.g., for 'users/john/email' it would be 'email'
  * @callback  { function }  callback function, called with (null, value) on success and (err) on fail.
- * 
  */
 export const FirebaseInput = (props) => {
   const [value, setValue] = useState('')
